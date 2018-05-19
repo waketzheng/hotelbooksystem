@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     'backend',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,8 +75,10 @@ if not DEBUG:
     ALLOWED_HOSTS = ['127.0.0.1']
     INSTALLED_APPS.append('qiniuyun')
 else:
+    # django debug toolbar
+    # https://github.com/jazzband/django-debug-toolbar 
     INSTALLED_APPS.append('debug_toolbar')
-    MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
     INTERNAL_IPS = ['127.0.0.1', '0.0.0.0']
     DEBUG_TOOLBAR_CONFIG = {
         'JQUERY_URL': '//cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
