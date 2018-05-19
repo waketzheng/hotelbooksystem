@@ -1,6 +1,4 @@
-#coding=utf-8
 import os
-from django.conf.global_settings import MEDIA_URL, MEDIA_ROOT
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -9,12 +7,8 @@ SECRET_KEY = 'if4s&rsp65^oe*o!%%e*(%x9*pxazr0&bae%+&50a*cer$a(xa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True and 'romanload' not in BASE_DIR
-    
-ALLOWED_HOSTS = [
-    "localhost",'127.0.0.1',
-    'williezheng.pythonanywhere.com',
-]
 
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -26,11 +20,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'backend',
-    'qiniuyun',
-    
 ]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -38,7 +30,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+]
 
 ROOT_URLCONF = 'booksystem.urls'
 
@@ -47,7 +39,7 @@ WSGI_APPLICATION = 'booksystem.wsgi.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')] ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,15 +63,24 @@ DATABASES = {
 }
 if not DEBUG:
     from .local_settings import email_conf, qiniu_conf, DATABASES
-    
-# qiniu settigs for upload used by 'qiniuyun.QiniuPush'
-# https://github.com/qiniu/python-sdk
-    
-    QINIU_CONF=qiniu_conf
-#  ---------------------------------------------------------    
-#  Email ,ref:http://www.cnblogs.com/BeginMan/p/3443158.html
+
+    # qiniu settigs for upload used by 'qiniuyun.QiniuPush'
+    # https://github.com/qiniu/python-sdk
+    QINIU_CONF = qiniu_conf
+
+    #  Email ,ref:http://www.cnblogs.com/BeginMan/p/3443158.html
     globals().update(email_conf)
-#  ---------------------------------------------------------
+
+    # some settings
+    ALLOWED_HOSTS = ['127.0.0.1']
+    INSTALLED_APPS.append('qiniuyun')
+else:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+    INTERNAL_IPS = ['127.0.0.1', '0.0.0.0']
+    DEBUG_TOOLBAR_CONFIG = {
+        'JQUERY_URL': '//cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
+        'SHOW_COLLAPSED': True}
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
@@ -102,4 +103,3 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
