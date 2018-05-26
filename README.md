@@ -31,6 +31,8 @@ vi .env
 ```
 4. 建立虚拟环境：
 ```
+# You may need to install gcc zlib-dev python3-dev mysql-dev
+# see: https://github.com/PyMySQL/mysqlclient-python
 pipenv install --dev
 ```
 5. 激活虚拟环境：
@@ -48,7 +50,7 @@ pipenv shell
 ```
 8. 打开如下网址即可看到运行效果：
 
-http://127.0.0.1:8000/ 
+http://127.0.0.1:8000/
 
 production:
 -----------
@@ -64,7 +66,6 @@ http://127.0.0.1:8000/admin
 http://127.0.0.1:8000/upload
 
 11. 上传图片到七牛云存储（七牛上需有local_settings.py中对应的私有空间）：
-- 图片在static/pic 
+- 图片在static/pic
 - Name输入框需留空
 - 一个个来并且全部上传
-
