@@ -3,7 +3,7 @@ from random import randint
 from django.conf import settings
 from django.http import Http404
 from django.shortcuts import render
-from .models import Hotel, RoomInfo, Order, Customer
+from .models import Hotel, Room, Order, Customer
 
 if not settings.DEBUG:
     from qiniuyun.backend import QiniuPush
@@ -39,7 +39,7 @@ def index(request):
 
 
 def room_info(request):
-    rooms = RoomInfo.objects.all()
+    rooms = Room.objects.all()
     imgObjs = ImageAtQiniu.objects.all()
     imgUrls = [QiniuPush.private_download_url(i.fullname) for i in imgObjs]
     imgs = ImgList()
@@ -49,7 +49,7 @@ def room_info(request):
             imgs.logo = i
 
     return render(
-        request, "roominfo.html", {"roomInfoList": rooms, "img": imgs}
+        request, "roominfo.html", {"rooms": rooms, "img": imgs}
     )
 
 
@@ -102,13 +102,13 @@ def order_done(request):
     price = 0
 
     if tempOrder.roomtype == "standard":
-        price = (RoomInfo.objects.get(name="标准间")).price
+        price = (Room.objects.get(name="标准间")).price
 
     elif tempOrder.roomtype == "better":
-        price = (RoomInfo.objects.get(name="豪华间")).price
+        price = (Room.objects.get(name="豪华间")).price
 
     elif tempOrder.roomtype == "president":
-        price = (RoomInfo.objects.get(name="总统间")).price
+        price = (Room.objects.get(name="总统间")).price
 
     tempOrder.roomnum = randint(1, 10)
     tempOrder.totalprice = period * price

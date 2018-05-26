@@ -40,9 +40,13 @@ class Customer(models.Model):
         return self.name
 
 
-class RoomInfo(models.Model):
+class Room(models.Model):
+    hotel = models.ForeignKey(Hotel, verbose_name="酒店", on_delete=None)
     name = models.CharField("房间号", max_length=30, primary_key=True)
     price = models.IntegerField("价格", null=True, blank=True)
+    roomtype = models.CharField(
+        "房间类型", max_length=45, choices=ROOM_TPYE_CHOICES
+    )
     area = models.IntegerField("面积", null=True, blank=True)
     summary = models.TextField("简介")
 
@@ -57,6 +61,8 @@ class Order(models.Model):
     roomtype = models.CharField(
         "房间类型", max_length=45, choices=ROOM_TPYE_CHOICES
     )
+    hotel = models.ForeignKey(Hotel, verbose_name="酒店", on_delete=None)
+    room = models.ForeignKey(Room, verbose_name="酒店", on_delete=None)
     begin = models.DateField("入住时间")
     end = models.DateField("离店时间")
     totalprice = models.IntegerField("需支付金额")
