@@ -5,10 +5,10 @@ name = "pypi"
 
 [packages]
 django = "*"
-pymysql = "*"
 pyparsing = "*"
 qiniu = "*"
 pillow = "*"
+mysqlclient = "*"
 
 [dev-packages]
 ipython = "*"
