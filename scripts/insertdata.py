@@ -1,14 +1,15 @@
 import pymysql
 from booksystem.local_settings import DATABASES
 
-dbconf = DATABASES.get('default')
-config = {'host': dbconf.get('HOST'),
-          'user': dbconf.get('USER'),
-          'passwd': dbconf.get('PASSWORD'),
-          'port': dbconf.get('PORT'),
-          'charset': 'utf8',
-          'db': dbconf.get('NAME'),
-          }
+dbconf = DATABASES.get("default")
+config = {
+    "host": dbconf.get("HOST"),
+    "user": dbconf.get("USER"),
+    "passwd": dbconf.get("PASSWORD"),
+    "port": dbconf.get("PORT"),
+    "charset": "utf8",
+    "db": dbconf.get("NAME"),
+}
 
 insert_hotel = """insert into DJangoHotel_hotel(name, address, description)
                  values ('Django Hotel', 'GZ Tianhe Chebei',
@@ -36,9 +37,10 @@ try:
         cur.execute(i)
 
     conn.commit()
-    print('success to insert data')
+    print("success to insert data")
     cur.close()
     conn.close()
 except Exception as e:
     import traceback
+
     traceback.print_exc()

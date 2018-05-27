@@ -1,5 +1,6 @@
 # coding=utf-8
 from __future__ import absolute_import, unicode_literals
+
 # https://github.com/qiniu/python-sdk/blob/master/qiniu/services/storage/uploader.py
 # https://developer.qiniu.com/kodo/sdk/python
 from qiniu import Auth, put_file, put_data, BucketManager
@@ -9,10 +10,10 @@ from datetime import datetime
 
 
 class QiniuStorage(object):
-    '''
+    """
     七牛云的文件上传、显示、删除
     @auth:ZWJ
-    '''
+    """
 
     def __init__(self, access_key, secret_key, bucket_name, bucket_domain):
         """
@@ -41,29 +42,29 @@ class QiniuStorage(object):
         key = self._newname(name)
         # 生成上传 Token，可以指定过期时间等
         token = self.auth.upload_token(self.bucket_name, key)
-        if hasattr(data, 'chunks'):
-            data = b''.join(c for c in data.chunks())
+        if hasattr(data, "chunks"):
+            data = b"".join(c for c in data.chunks())
         ret, info = put_data(token, key, data)  # 上传文件流到七牛
-        if ret is None or ret['key'] != key:
+        if ret is None or ret["key"] != key:
             raise QiniuError(info)
         return self.get_url(key)
 
     def _newname(self, name):
-        '''加上6位日期和6位时间标识 PG.jpg --> PG_170211_044217.jpg '''
+        """加上6位日期和6位时间标识 PG.jpg --> PG_170211_044217.jpg """
         root, ext = splitext(basename(name))
-        time = datetime.now().strftime('_%y%m%d_%H%M%S')
-        return '{}{}{}'.format(root, time, ext)
+        time = datetime.now().strftime("_%y%m%d_%H%M%S")
+        return "{}{}{}".format(root, time, ext)
 
     def get_url(self, key):
-        '''
+        """
         @def:get_url
         @def_fun: 返回七牛云上文件名为key的文件对应的url地址
            如果是公有空间，该地址可以直接访问文件；私有空间则需用private_download_url
         @para:
             key: 七牛云上的文件名
         @ret:域名加文件名生成的url路径
-        '''
-        url = 'http://{}/{}'.format(self.bucket_domain, key)
+        """
+        url = "http://{}/{}".format(self.bucket_domain, key)
         return url
 
     def private_download_url(self, url, expires=7200):
@@ -89,24 +90,24 @@ class QiniuStorage(object):
         key = self._newname(filePath)
         token = self.auth.upload_token(self.bucket_name, key)
         ret, info = put_file(token, key, filePath)
-        if ret is None or ret['key'] != key:
+        if ret is None or ret["key"] != key:
             raise QiniuError(info)
         return self.get_url(key)
 
     def exists(self, key):
-        '''检测七牛云上是否有文件名为key的文件'''
+        """检测七牛云上是否有文件名为key的文件"""
         bucket = self.bucket_manager
-        ret, info = bucket.stat(self.bucket_name, key.split('/')[-1])
+        ret, info = bucket.stat(self.bucket_name, key.split("/")[-1])
         return ret is not None
 
     def delete(self, key):
-        '''删除七牛云上文件名为key的文件'''
+        """删除七牛云上文件名为key的文件"""
         if not self.exists(key):
-            return '{} not exist in qiniu_cloud'.format(key)
+            return "{} not exist in qiniu_cloud".format(key)
         bm = self.bucket_manager
-        ret, info = bm.delete(self.bucket_name, key.split('/')[-1])
+        ret, info = bm.delete(self.bucket_name, key.split("/")[-1])
         if ret == {}:
-            return 'success to delete {} in qiniu_cloud'.format(key)
+            return "success to delete {} in qiniu_cloud".format(key)
         else:
             return info
 
@@ -122,8 +123,9 @@ class QiniuStorage(object):
         @ret:  文件名组成的set()集合
         """
         files = set()
-        dirlist = bucket_lister(self.bucket_manager, self.bucket_name,
-                                prefix, limit)
+        dirlist = bucket_lister(
+            self.bucket_manager, self.bucket_name, prefix, limit
+        )
         for item in dirlist:
-            files.add(item['key'])
+            files.add(item["key"])
         return files

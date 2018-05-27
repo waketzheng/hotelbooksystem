@@ -55,8 +55,8 @@ def creat_db(config, db_name, engine, drop=False):
 
 
 def mysql(config, db_name, drop=False):
-    # TODO: use MySQLdb
     import MySQLdb
+
     try:
         conn = MySQLdb.connect(**config)
         cur = conn.cursor()
@@ -88,11 +88,17 @@ def sqlite(config, db_name, drop=False):
 
 def main():
     from argparse import ArgumentParser
+
     parser = ArgumentParser()
-    parser.add_argument('-d', '--delete', action='store_true',
-                        help='whether to recursive')
-    parser.add_argument('-a', '--alias', default='default',
-                        help='the alias of the database(default:default)')
+    parser.add_argument(
+        "-d", "--delete", action="store_true", help="whether to recursive"
+    )
+    parser.add_argument(
+        "-a",
+        "--alias",
+        default="default",
+        help="the alias of the database(default:default)",
+    )
     args, unknown = parser.parse_known_args()
     manage_path = configure_settings()
     sys.path.insert(0, str(manage_path.parent))

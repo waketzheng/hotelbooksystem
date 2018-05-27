@@ -14,10 +14,10 @@ from qiniu import Auth
 from qiniu import BucketManager
 
 
-access_key = ''
-secret_key = ''
-bucket_name = ''
-bucket_domain = ''
+access_key = ""
+secret_key = ""
+bucket_name = ""
+bucket_domain = ""
 
 q = Auth(access_key, secret_key)
 bucket = BucketManager(q)
@@ -32,7 +32,8 @@ ignore_names = [
     ".gitignore",
     "qiniusync.py",
     "README.md",
-    "LICENSE"]
+    "LICENSE",
+]
 charset = "utf8"
 diff_time = 2 * 60
 
@@ -45,9 +46,10 @@ def list_all(bucket_name, bucket=None, prefix="", limit=100):
     eof = False
     while eof is False:
         ret, eof, info = bucket.list(
-            bucket_name, prefix=prefix, marker=marker, limit=limit)
-        marker = ret.get('marker', None)
-        for item in ret['items']:
+            bucket_name, prefix=prefix, marker=marker, limit=limit
+        )
+        marker = ret.get("marker", None)
+        for item in ret["items"]:
             rlist.append(item["key"])
     if eof is not True:
         # 错误处理
@@ -56,11 +58,8 @@ def list_all(bucket_name, bucket=None, prefix="", limit=100):
 
 
 def get_files(
-        basedir="",
-        fix="",
-        rlist=None,
-        ignore_paths=[],
-        ignore_names=[]):
+    basedir="", fix="", rlist=None, ignore_paths=[], ignore_names=[]
+):
     if rlist is None:
         rlist = []
     for subfile in os.listdir(basedir):
@@ -79,9 +78,8 @@ def get_files(
 
 def get_valid_key_files(basedir=basedir):
     files = get_files(
-        basedir=basedir,
-        ignore_paths=ignore_paths,
-        ignore_names=ignore_names)
+        basedir=basedir, ignore_paths=ignore_paths, ignore_names=ignore_names
+    )
     return map(lambda f: (f.replace("\\", "/"), f), files)
 
 
@@ -134,15 +132,22 @@ def update_file(k2f, ulist):
 
 
 def upload_file(key, localfile):
-    print(f'upload_file:\n{key}')
+    print(f"upload_file:\n{key}")
     token = q.upload_token(bucket_name, key)
     mime_type = get_mime_type(localfile)
-    params = {'x:a': 'a'}
+    params = {"x:a": "a"}
 
-    def progress_handler(progress, total): return progress
+    def progress_handler(progress, total):
+        return progress
+
     ret, info = qiniu.put_file(
-        token, key, localfile, params, mime_type,
-        progress_handler=progress_handler)
+        token,
+        key,
+        localfile,
+        params,
+        mime_type,
+        progress_handler=progress_handler,
+    )
 
 
 def get_mime_type(path):
@@ -153,7 +158,7 @@ def get_mime_type(path):
 def down_file(key, basedir="", is_private=1, expires=3600):
     if isinstance(key, str):
         key = key.encode(charset)
-    url = 'http://{}/{}'.format(bucket_domain, key)
+    url = "http://{}/{}".format(bucket_domain, key)
     if is_private:
         url = q.private_download_url(url, expires=expires)
     c = urllib2.urlopen(url)
@@ -164,18 +169,19 @@ def down_file(key, basedir="", is_private=1, expires=3600):
         os.makedirs(dir_)
     elif os.path.isfile(savepath):
         os.remove(savepath)
-    with open(savepath, 'wb') as f:
+    with open(savepath, "wb") as f:
         f.write(c.read())
 
 
 def down_all(prefix=""):
     import traceback
+
     for key in list_all(bucket_name, bucket, prefix=prefix):
         try:
             down_file(key, basedir=basedir)
-            print(f'down:\t{key}')
+            print(f"down:\t{key}")
         except BaseException:
-            print(f'error down:\t{key}')
+            print(f"error down:\t{key}")
             traceback.print_exc()
     print("down end")
 

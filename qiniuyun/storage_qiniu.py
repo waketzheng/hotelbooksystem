@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class FieldFile(File):
+
     def __init__(self, instance, field, name):
         super(FieldFile, self).__init__(None, name)
         self.instance = instance
@@ -27,7 +28,7 @@ class FieldFile(File):
     def __eq__(self, other):
         # Older code may be expecting FileField values to be simple strings.
         # By overriding the == operator, it can remain backwards compatibility.
-        if hasattr(other, 'name'):
+        if hasattr(other, "name"):
             return self.name == other.name
         return self.name == other
 
@@ -44,13 +45,14 @@ class FieldFile(File):
     def _require_file(self):
         if not self:
             raise ValueError(
-                "The '%s' attribute has no file associated with it." %
-                self.field.name)
+                "The '%s' attribute has no file associated with it."
+                % self.field.name
+            )
 
     def _get_file(self):
         self._require_file()
-        if not hasattr(self, '_file') or self._file is None:
-            self._file = self.storage.open(self.name, 'rb')
+        if not hasattr(self, "_file") or self._file is None:
+            self._file = self.storage.open(self.name, "rb")
         return self._file
 
     def _set_file(self, file):
@@ -64,11 +66,13 @@ class FieldFile(File):
     def _get_path(self):
         self._require_file()
         return self.storage.path(self.name)
+
     path = property(_get_path)
 
     def _get_url(self):
         self._require_file()
         return self.storage.url(self.name)
+
     url = property(_get_url)
 
     def _get_size(self):
@@ -76,11 +80,13 @@ class FieldFile(File):
         if not self._committed:
             return self.file.size
         return self.storage.size(self.name)
+
     size = property(_get_size)
 
-    def open(self, mode='rb'):
+    def open(self, mode="rb"):
         self._require_file()
         self.file.open(mode)
+
     # open() doesn't alter the file's contents, but it does reset the pointer
     open.alters_data = True
 
@@ -92,15 +98,17 @@ class FieldFile(File):
         name = self.field.generate_filename(self.instance, name)
 
         args, varargs, varkw, defaults = getargspec(self.storage.save)
-        if 'max_length' in args:
+        if "max_length" in args:
             self.name = self.storage.save(
-                name, content, max_length=self.field.max_length)
+                name, content, max_length=self.field.max_length
+            )
         else:
             warnings.warn(
-                'Backwards compatibility for storage backends without '
-                'support for the `max_length` argument in '
-                'Storage.save() will be removed in Django 2.0.',
-                RemovedInDjango20Warning, stacklevel=2
+                "Backwards compatibility for storage backends without "
+                "support for the `max_length` argument in "
+                "Storage.save() will be removed in Django 2.0.",
+                RemovedInDjango20Warning,
+                stacklevel=2,
             )
             self.name = self.storage.save(name, content)
 
@@ -113,6 +121,7 @@ class FieldFile(File):
         # Save the object because it has changed, unless save is False
         if save:
             self.instance.save()
+
     save.alters_data = True
 
     def delete(self, save=True):
@@ -120,7 +129,7 @@ class FieldFile(File):
             return
         # Only close the file if it's already open, which we know by the
         # presence of self._file
-        if hasattr(self, '_file'):
+        if hasattr(self, "_file"):
             self.close()
             del self.file
 
@@ -130,21 +139,23 @@ class FieldFile(File):
         setattr(self.instance, self.field.name, self.name)
 
         # Delete the filesize cache
-        if hasattr(self, '_size'):
+        if hasattr(self, "_size"):
             del self._size
         self._committed = False
 
         if save:
             self.instance.save()
+
     delete.alters_data = True
 
     def _get_closed(self):
-        file = getattr(self, '_file', None)
+        file = getattr(self, "_file", None)
         return file is None or file.closed
+
     closed = property(_get_closed)
 
     def close(self):
-        file = getattr(self, '_file', None)
+        file = getattr(self, "_file", None)
         if file is not None:
             file.close()
 
@@ -154,10 +165,11 @@ class FieldFile(File):
         # data to be pickled is the file's name itself. Everything else will
         # be restored later, by FileDescriptor below.
         return {
-            'name': self.name,
-            'closed': False,
-            '_committed': True,
-            '_file': None}
+            "name": self.name,
+            "closed": False,
+            "_committed": True,
+            "_file": None,
+        }
 
 
 class FileDescriptor(object):
@@ -183,7 +195,8 @@ class FileDescriptor(object):
         if instance is None:
             raise AttributeError(
                 "The '%s' attribute can only be accessed from %s instances."
-                % (self.field.name, owner.__name__))
+                % (self.field.name, owner.__name__)
+            )
 
         # This is slightly complicated, so worth an explanation.
         # instance.file`needs to ultimately return some instance of `File`,
@@ -224,7 +237,7 @@ class FileDescriptor(object):
         # the underlying FieldFile might not actually itself have an associated
         # file. So we need to reset the details of the FieldFile in those
         # cases.
-        elif isinstance(file, FieldFile) and not hasattr(file, 'field'):
+        elif isinstance(file, FieldFile) and not hasattr(file, "field"):
             file.instance = instance
             file.field = self.field
             file.storage = self.field.storage
@@ -248,21 +261,22 @@ class FileField(Field):
     description = _("File")
 
     def __init__(
-            self,
-            verbose_name=None,
-            name=None,
-            upload_to='',
-            storage=None,
-            **kwargs):
-        self._primary_key_set_explicitly = 'primary_key' in kwargs
-        self._unique_set_explicitly = 'unique' in kwargs
+        self,
+        verbose_name=None,
+        name=None,
+        upload_to="",
+        storage=None,
+        **kwargs
+    ):
+        self._primary_key_set_explicitly = "primary_key" in kwargs
+        self._unique_set_explicitly = "unique" in kwargs
 
         self.storage = storage or default_storage
         self.upload_to = upload_to
         if callable(upload_to):
             self.generate_filename = upload_to
 
-        kwargs['max_length'] = kwargs.get('max_length', 100)
+        kwargs["max_length"] = kwargs.get("max_length", 100)
         super(FileField, self).__init__(verbose_name, name, **kwargs)
 
     def check(self, **kwargs):
@@ -275,12 +289,13 @@ class FileField(Field):
         if self._unique_set_explicitly:
             return [
                 checks.Error(
-                    "'unique' is not a valid argument for a %s." %
-                    self.__class__.__name__,
+                    "'unique' is not a valid argument for a %s."
+                    % self.__class__.__name__,
                     hint=None,
                     obj=self,
-                    id='fields.E200',
-                )]
+                    id="fields.E200",
+                )
+            ]
         else:
             return []
 
@@ -288,12 +303,13 @@ class FileField(Field):
         if self._primary_key_set_explicitly:
             return [
                 checks.Error(
-                    "'primary_key' is not a valid argument for a %s." %
-                    self.__class__.__name__,
+                    "'primary_key' is not a valid argument for a %s."
+                    % self.__class__.__name__,
                     hint=None,
                     obj=self,
-                    id='fields.E201',
-                )]
+                    id="fields.E201",
+                )
+            ]
         else:
             return []
 
@@ -301,16 +317,16 @@ class FileField(Field):
         name, path, args, kwargs = super(FileField, self).deconstruct()
         if kwargs.get("max_length", None) == 100:
             del kwargs["max_length"]
-        kwargs['upload_to'] = self.upload_to
+        kwargs["upload_to"] = self.upload_to
         if self.storage is not default_storage:
-            kwargs['storage'] = self.storage
+            kwargs["storage"] = self.storage
         return name, path, args, kwargs
 
     def get_internal_type(self):
         return "FileField"
 
     def get_prep_lookup(self, lookup_type, value):
-        if hasattr(value, 'name'):
+        if hasattr(value, "name"):
             value = value.name
         return super(FileField, self).get_prep_lookup(lookup_type, value)
 
@@ -338,19 +354,19 @@ class FileField(Field):
     def get_directory_name(self):
         return os.path.normpath(
             force_text(
-                datetime.datetime.now().strftime(
-                    force_str(
-                        self.upload_to))))
+                datetime.datetime.now().strftime(force_str(self.upload_to))
+            )
+        )
 
     def get_filename(self, filename):
         return os.path.normpath(
-            self.storage.get_valid_name(
-                os.path.basename(filename)))
+            self.storage.get_valid_name(os.path.basename(filename))
+        )
 
     def generate_filename(self, instance, filename):
         return os.path.join(
-            self.get_directory_name(),
-            self.get_filename(filename))
+            self.get_directory_name(), self.get_filename(filename)
+        )
 
     def save_form_data(self, instance, data):
         # Important: None means "no change", other false value means "clear"
@@ -361,21 +377,22 @@ class FileField(Field):
             # This value will be converted to unicode and stored in the
             # database, so leaving False as-is is not acceptable.
             if not data:
-                data = ''
+                data = ""
             setattr(instance, self.name, data)
 
     def formfield(self, **kwargs):
         defaults = {
-            'form_class': forms.FileField,
-            'max_length': self.max_length}
+            "form_class": forms.FileField,
+            "max_length": self.max_length,
+        }
         # If a file has been provided previously, then the form doesn't require
         # that a new file is provided this time.
         # The code to mark the form field as not required is used by
         # form_for_instance, but can probably be removed once form_for_instance
         # is gone. ModelForm uses a different method to check for an existing
         # file.
-        if 'initial' in kwargs:
-            defaults['required'] = False
+        if "initial" in kwargs:
+            defaults["required"] = False
         defaults.update(kwargs)
         return super(FileField, self).formfield(**defaults)
 
@@ -404,9 +421,10 @@ class ImageFileDescriptor(FileDescriptor):
 
 
 class ImageFieldFile(ImageFile, FieldFile):
+
     def delete(self, save=True):
         # Clear the image dimensions cache
-        if hasattr(self, '_dimensions_cache'):
+        if hasattr(self, "_dimensions_cache"):
             del self._dimensions_cache
         super(ImageFieldFile, self).delete(save)
 
@@ -416,8 +434,14 @@ class ImageField(FileField):
     descriptor_class = ImageFileDescriptor
     description = _("Image")
 
-    def __init__(self, verbose_name=None, name=None, width_field=None,
-                 height_field=None, **kwargs):
+    def __init__(
+        self,
+        verbose_name=None,
+        name=None,
+        width_field=None,
+        height_field=None,
+        **kwargs
+    ):
         self.width_field, self.height_field = width_field, height_field
         super(ImageField, self).__init__(verbose_name, name, **kwargs)
 
@@ -432,11 +456,13 @@ class ImageField(FileField):
         except ImportError:
             return [
                 checks.Error(
-                    'Cannot use ImageField because Pillow is not installed.',
-                    hint=('Get Pillow at https://pypi.python.org/pypi/Pillow '
-                          'or run command "pip install Pillow".'),
+                    "Cannot use ImageField because Pillow is not installed.",
+                    hint=(
+                        "Get Pillow at https://pypi.python.org/pypi/Pillow "
+                        'or run command "pip install Pillow".'
+                    ),
                     obj=self,
-                    id='fields.E210',
+                    id="fields.E210",
                 )
             ]
         else:
@@ -445,9 +471,9 @@ class ImageField(FileField):
     def deconstruct(self):
         name, path, args, kwargs = super(ImageField, self).deconstruct()
         if self.width_field:
-            kwargs['width_field'] = self.width_field
+            kwargs["width_field"] = self.width_field
         if self.height_field:
-            kwargs['height_field'] = self.height_field
+            kwargs["height_field"] = self.height_field
         return name, path, args, kwargs
 
     def contribute_to_class(self, cls, name, **kwargs):
@@ -486,7 +512,7 @@ class ImageField(FileField):
         if not file and not force:
             return
 
-        dimension_fields_filled = not(
+        dimension_fields_filled = not (
             (self.width_field and not getattr(instance, self.width_field))
             or (self.height_field and not getattr(instance, self.height_field))
         )
@@ -516,6 +542,6 @@ class ImageField(FileField):
             setattr(instance, self.height_field, height)
 
     def formfield(self, **kwargs):
-        defaults = {'form_class': forms.ImageField}
+        defaults = {"form_class": forms.ImageField}
         defaults.update(kwargs)
         return super(ImageField, self).formfield(**defaults)

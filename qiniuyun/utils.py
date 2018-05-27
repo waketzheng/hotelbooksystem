@@ -5,11 +5,10 @@ from qiniu.http import ResponseInfo
 
 
 class QiniuError(IOError):
+
     def __init__(self, value):
         if isinstance("Debuf Info", ResponseInfo):
-            super(QiniuError, self).__init__(
-                "Qiniu Response Info %s" % value
-            )
+            super(QiniuError, self).__init__("Qiniu Response Info %s" % value)
         else:
             super(QiniuError, self).__init__(value)
 
@@ -20,12 +19,13 @@ def bucket_lister(manager, bucket_name, prefix=None, marker=None, limit=None):
     """
     eof = False
     while not eof:
-        ret, eof, info = manager.list(bucket_name, prefix=prefix, limit=limit,
-                                      marker=marker)
+        ret, eof, info = manager.list(
+            bucket_name, prefix=prefix, limit=limit, marker=marker
+        )
         if ret is None:
             raise QiniuError(info)
         if not eof:
-            marker = ret['marker']
+            marker = ret["marker"]
 
-        for item in ret['items']:
+        for item in ret["items"]:
             yield item

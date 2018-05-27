@@ -48,9 +48,7 @@ def room_info(request):
         if "hotel-logo" in i:
             imgs.logo = i
 
-    return render(
-        request, "roominfo.html", {"rooms": rooms, "img": imgs}
-    )
+    return render(request, "roominfo.html", {"rooms": rooms, "img": imgs})
 
 
 def order(request):
