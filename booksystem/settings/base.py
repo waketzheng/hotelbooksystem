@@ -6,9 +6,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = "if4s&rsp65^oe*o!%%e*(%x9*pxazr0&bae%+&50a*cer$a(xa"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True and "romanload" not in BASE_DIR
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -52,15 +51,6 @@ TEMPLATES = [
     }
 ]
 
-# Database
-# https://docs.djangoproject.com/en/dev/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
-}
 if not DEBUG:
     from .local_settings import email_conf, qiniu_conf, DATABASES
 
@@ -74,17 +64,6 @@ if not DEBUG:
     # some settings
     ALLOWED_HOSTS = ["127.0.0.1"]
     INSTALLED_APPS.append("qiniuyun")
-else:
-    # django debug toolbar
-    # https://github.com/jazzband/django-debug-toolbar
-    INSTALLED_APPS.append("debug_toolbar")
-    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
-    INTERNAL_IPS = ["127.0.0.1", "0.0.0.0"]
-    DEBUG_TOOLBAR_CONFIG = {
-        "JQUERY_URL": "//cdn.bootcss.com/jquery/2.1.4/jquery.min.js",
-        "SHOW_TOOLBAR_CALLBACK": lambda x: True,
-        "SHOW_COLLAPSED": True,
-    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/

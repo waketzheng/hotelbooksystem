@@ -3,7 +3,6 @@ hotelbooksystem
 
 A demo for hotel order booking system
 
-<br />
 
 Base on
 -------
@@ -24,12 +23,7 @@ git clone https://github.com/waketzheng/hotelbooksystem
 cd hotelbooksystem
 ```
 
-2. modify `.env`, DB_USER -- database user, DB_PASSWD -- database password
-
-```bash
-vi .env
-```
-3. create a virtual environment(use `pipenv`: https://docs.pipenv.org/)
+2. create a virtual environment(use `pipenv`: https://docs.pipenv.org/)
 
 ```bash
 # You may need to install gcc zlib-dev python3-dev mysql-dev
@@ -37,43 +31,28 @@ vi .env
 pipenv install --dev
 ```
 
-4. activate it
+3. activate it
 
 ```bash
 pipenv shell
 ```
 
-5. init database
+4. init database
 
 ```bash
 (venv)$ python manage.py migrate
 (venv)$ python manage.py loaddata fixtures/init_hotel_name_and_pic.json
 ```
 
-7. run server
+5. run server
 
 ```bash
 (venv)$ python manage.py runserver
 ```
 
-8. open the url at webbrowser
+6. open the url at webbrowser
 
     http://127.0.0.1:8000/
-
-Optional: use qiniu for static and image file server
------------
-
-9. configure database, email and qiniu
-```bash
-vi booksystem/local_settings.py
-```
-10. login as admin to upload images
-
-    http://127.0.0.1:8000/admin
-
-    http://127.0.0.1:8000/upload
-
-11. upload images to qiniu(should have private storage at qiniu at configure keys at local_settings.py)
 
 
 Production
@@ -83,11 +62,49 @@ Production
 
 ```bash
 echo '
-dB_USER = your-database-user-name
-DB_PASSWD = your-database-password
+dB_USER=your-database-user-name
+DB_PASSWD=your-database-password
+EMAIL=your-email
+EMAIL_PASSWD=your-email-password
 ' > .env
 ```
 
-2. deploy as other django project
+Example of `.env`:
+```
+dB_USER=root
+DB_PASSWD=123456
+EMAIL=jaket5219999@126.com
+EMAIL_PASSWD=123456
+```
+
+2. create virtual environment and activate it
+
+```bash
+pipenv install
+pipenv shell
+```
+
+3. create database for this project and migrate
+
+```bash
+./scripts/createdatabase.py
+```
+
+4. deploy as other django project
 
     https://docs.djangoproject.com/en/2.0/howto/deployment/wsgi/gunicorn/
+
+Optional: use qiniu for static and image file server
+-----------
+
+5. configure database, email and qiniu
+```bash
+vi booksystem/local_settings.py
+```
+6. login as admin to upload images
+
+    http(s)://your-domain-or-ip/admin
+
+    http(s)://your-domain-or-ip/upload
+
+7. upload images to qiniu(should have private storage at qiniu at configure keys at settings/prod.py)
