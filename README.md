@@ -58,10 +58,11 @@ pipenv shell
 Production
 -------------
 
-1. configure settings of database
+1. configure settings, database and email
 
 ```bash
 echo '
+DJANGO_SETTINGS_MODULE=booksystem.settings.prod
 dB_USER=your-database-user-name
 DB_PASSWD=your-database-password
 EMAIL=your-email
@@ -71,6 +72,7 @@ EMAIL_PASSWD=your-email-password
 
 Example of `.env`:
 ```
+DJANGO_SETTINGS_MODULE=booksystem.settings.prod
 dB_USER=root
 DB_PASSWD=123456
 EMAIL=jaket5219999@126.com

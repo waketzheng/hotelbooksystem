@@ -13,6 +13,9 @@ DATABASES = {
     }
 }
 
+
+#  Email ,ref:http://www.cnblogs.com/BeginMan/p/3443158.html
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"  # email后端
 EMAIL_HOST_USER = os.environ.get("EMAIL")  # 发送邮件的邮箱地址
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWD")  # 发送邮件的邮箱密码
@@ -27,6 +30,7 @@ DEFAULT_FROM_EMAIL = os.environ.get("EMAIL")  # 这项可要可不要
 
 # 七牛云存储的权限校验机制基于一对密钥，分别称为Access Key和Secret Key。
 # 其中Access Key是公钥，Secret Key是私钥。这一对密钥可以从七牛的后台获取。
+INSTALLED_APPS.append("qiniuyun")
 qiniu_keys = {
     "access_key": "-3E2wJzd-EXy7Yfimpv4OoCVJrWt2OBDzfUmiqb",
     "secret_key": "OidK013nXDQEnyvhLxxKm0mKLGwZ4e9ZhBGu_BC",
@@ -35,4 +39,4 @@ qiniu_bucket = {
     "bucket_name": "hotelbooksystem",  # 要上传的空间
     "bucket_domain": "onzbkytkc.bkt.clouddn.com",  # 获取文件url路径时对应的私有域名
 }
-qiniu_conf = dict(qiniu_keys, **qiniu_bucket)  # so pythonic to add two dict
+QINIU_CONF = dict(qiniu_keys, **qiniu_bucket)  # so pythonic to add two dict

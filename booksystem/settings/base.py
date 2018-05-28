@@ -51,19 +51,6 @@ TEMPLATES = [
     }
 ]
 
-if not DEBUG:
-    from .local_settings import email_conf, qiniu_conf, DATABASES
-
-    # qiniu settigs for upload used by 'qiniuyun.QiniuPush'
-    # https://github.com/qiniu/python-sdk
-    QINIU_CONF = qiniu_conf
-
-    #  Email ,ref:http://www.cnblogs.com/BeginMan/p/3443158.html
-    globals().update(email_conf)
-
-    # some settings
-    ALLOWED_HOSTS = ["127.0.0.1"]
-    INSTALLED_APPS.append("qiniuyun")
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
