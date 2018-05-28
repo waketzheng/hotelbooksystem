@@ -5,7 +5,8 @@ A demo for hotel order booking system
 
 <br />
 
-# Base on
+Base on
+-------
 
 Python: 3.6
 
@@ -28,7 +29,7 @@ cd hotelbooksystem
 ```bash
 vi .env
 ```
-3. create virtualenv environment(use `pipenv`: https://docs.pipenv.org/)
+3. create a virtual environment(use `pipenv`: https://docs.pipenv.org/)
 
 ```bash
 # You may need to install gcc zlib-dev python3-dev mysql-dev
@@ -36,7 +37,7 @@ vi .env
 pipenv install --dev
 ```
 
-4. activate virtualenv
+4. activate it
 
 ```bash
 pipenv shell
@@ -62,20 +63,18 @@ pipenv shell
 Optional: use qiniu for static and image file server
 -----------
 
-7. 修改其中的配置（数据库、邮箱和七牛云)
-```
+9. configure database, email and qiniu
+```bash
 vi booksystem/local_settings.py
 ```
-10. 登录管理员，然后再进入上传页面：
+10. login as admin to upload images
 
-http://127.0.0.1:8000/admin
+    http://127.0.0.1:8000/admin
 
-http://127.0.0.1:8000/upload
+    http://127.0.0.1:8000/upload
 
-11. 上传图片到七牛云存储（七牛上需有local_settings.py中对应的私有空间）：
-- 图片在static/pic
-- Name输入框需留空
-- 一个个来并且全部上传
+11. upload images to qiniu(should have private storage at qiniu at configure keys at local_settings.py)
+
 
 Production
 -------------
