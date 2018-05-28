@@ -1,8 +1,7 @@
-======================
-# hotelbooksystem
-======================
+hotelbooksystem
+===============
 
-A demo for hotel order book
+A demo for hotel order booking system
 
 <br />
 
@@ -17,40 +16,48 @@ MySQL
 Debug
 ------
 
-1. clone source
-```
+1. clone source and cd to the project
+
+```bash
 git clone https://github.com/waketzheng/hotelbooksystem
-```
-2. cd to the directory
-```
 cd hotelbooksystem
 ```
-3. modify `.env`, DB_USER -- database user, DB_PASSWD -- database password
-```
+
+2. modify `.env`, DB_USER -- database user, DB_PASSWD -- database password
+
+```bash
 vi .env
 ```
-4. create virtualenv environment (use `pipenv`: https://docs.pipenv.org/)
-```
+3. create virtualenv environment(use `pipenv`: https://docs.pipenv.org/)
+
+```bash
 # You may need to install gcc zlib-dev python3-dev mysql-dev
 # see: https://github.com/PyMySQL/mysqlclient-python
 pipenv install --dev
 ```
-5. activate virtualenv
-```
+
+4. activate virtualenv
+
+```bash
 pipenv shell
 ```
-6. init database
-```
+
+5. init database
+
+```bash
 (venv)$ python manage.py migrate
 (venv)$ python manage.py loaddata fixtures/init_hotel_name_and_pic.json
 ```
+
 7. run server
-```
+
+```bash
 (venv)$ python manage.py runserver
 ```
+
 8. open the url at webbrowser
 
-http://127.0.0.1:8000/
+    http://127.0.0.1:8000/
 
 Optional: use qiniu for static and image file server
 -----------
@@ -84,4 +91,4 @@ DB_PASSWD = your-database-password
 
 2. deploy as other django project
 
-https://docs.djangoproject.com/en/2.0/howto/deployment/wsgi/gunicorn/
+    https://docs.djangoproject.com/en/2.0/howto/deployment/wsgi/gunicorn/
