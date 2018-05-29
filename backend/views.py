@@ -14,6 +14,7 @@ HOTEL = "romanload"
 
 
 def index(request):
+    # TODO: bind hotel name by Site
     try:
         hotel = Hotel.objects.get(name=HOTEL)
     except Hotel.DoesNotExist:
@@ -52,6 +53,7 @@ def room_info(request):
 
 
 def order(request):
+    # TODO: without qiniu
     imgObjs = ImageAtQiniu.objects.all()
     imgUrls = [QiniuPush.private_download_url(i.fullname) for i in imgObjs]
     imgs = ImgList()

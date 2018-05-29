@@ -30,6 +30,9 @@ class Poster(models.Model):
     hotel = models.ForeignKey(Hotel, verbose_name="酒店", on_delete=None)
     img = models.ImageField("海报", upload_to="images", null=True)
 
+    def __str__(self):
+        return f"{self.hotle} {self.img.name}"
+
 
 class Customer(models.Model):
     phone = models.CharField("手机", max_length=30)
@@ -44,6 +47,9 @@ class RoomType(models.Model):
     hotel = models.ForeignKey(Hotel, verbose_name="酒店", on_delete=None)
     detail = models.CharField("类型", max_length=30, choices=ROOM_TYPE_CHOICES)
     price = models.IntegerField("价格", null=True, blank=True)
+
+    def __str__(self):
+        return self.get_detail_display()
 
 
 class Room(models.Model):

@@ -94,8 +94,5 @@ ENV/
 # local db
 db.sqlite3
 
-# django
-migrations/
-
 # pipenv
 Pipfile.lock

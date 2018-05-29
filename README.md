@@ -41,7 +41,7 @@ pipenv shell
 
 ```bash
 (venv)$ python manage.py migrate
-(venv)$ python manage.py loaddata fixtures/init_hotel_name_and_pic.json
+(venv)$ python manage.py loaddata fixtures/romanload_hotel.json
 ```
 
 5. run server
