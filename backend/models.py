@@ -16,11 +16,12 @@ ORDER_STATE_CHOICES = (
 
 
 class Hotel(models.Model):
-    tel = models.CharField("电话", max_length=30)
-    name = models.CharField("名称", max_length=30)
-    address = models.CharField("地址", max_length=50)
-    summary = models.TextField("简介")
-    logo = models.ImageField(upload_to="images", null=True)
+    tel = models.CharField("电话", max_length=30, null=True, blank=True)
+    code = models.CharField("邮编", max_length=30, null=True, blank=True)
+    name = models.CharField("名称", max_length=30, null=True, blank=True)
+    address = models.CharField("地址", max_length=50, null=True)
+    summary = models.TextField("简介", blank=True)
+    logo = models.ImageField(upload_to="images", null=True, blank=True)
 
     def __str__(self):
         return self.name

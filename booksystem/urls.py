@@ -17,19 +17,12 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
+    # django debug toolbar
     import debug_toolbar
 
-    urlpatterns = (
-        [path("__debug__/", include(debug_toolbar.urls))]
-        + urlpatterns
-        + staticfiles_urlpatterns()
-        + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    )
-else:
-    from qiniuyun import views as qiniu_views
+    urlpatterns.insert(0, path("__debug__/", include(debug_toolbar.urls)))
 
-    urlpatterns += [
-        path("upload/", qiniu_views.upload, name="upload"),
-        path("upload/done/", qiniu_views.upload_result, name="upload_done"),
-        path("images/", qiniu_views.show_imgs, name="show_imgs"),
-    ]
+    # static and media
+    urlpatterns += staticfiles_urlpatterns() + static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )

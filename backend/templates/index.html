@@ -7,7 +7,7 @@
 {% block content %}
   <div class="banner">
     <ul>
-      {% for poster in posters %}
+      {% for poster in hotel.poster_set.all %}
         <li>
             <img src="{{ poster.img.url }}" height="550" width="1079" />
         </li>

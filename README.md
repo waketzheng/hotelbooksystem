@@ -95,18 +95,3 @@ pipenv shell
 4. deploy as other django project
 
     https://docs.djangoproject.com/en/2.0/howto/deployment/wsgi/gunicorn/
-
-Optional: use qiniu for static and image file server
------------
-
-5. configure database, email and qiniu
-```bash
-vi booksystem/local_settings.py
-```
-6. login as admin to upload images
-
-    http(s)://your-domain-or-ip/admin
-
-    http(s)://your-domain-or-ip/upload
-
-7. upload images to qiniu(should have private storage at qiniu at configure keys at settings/prod.py)

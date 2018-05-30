@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 django = "*"
 pyparsing = "*"
-qiniu = "*"
 pillow = "*"
 mysqlclient = "*"
 

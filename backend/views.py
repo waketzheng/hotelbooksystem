@@ -5,38 +5,13 @@ from django.http import Http404
 from django.shortcuts import render
 from .models import Hotel, Room, Order, Customer
 
-if not settings.DEBUG:
-    from qiniuyun.backend import QiniuPush
-    from qiniuyun.models import ImageAtQiniu
-
-
-HOTEL = "romanload"
-
 
 def index(request):
     # TODO: bind hotel name by Site
-    try:
-        hotel = Hotel.objects.get(name=HOTEL)
-    except Hotel.DoesNotExist:
-        raise Http404(f"Hotel {HOTEL!r} not found!")
-    # TO DO: detemine whether use qiniu
-    # imgObjs = ImageAtQiniu.objects.all()
-    # imgUrls = [QiniuPush.private_download_url(i.fullname) for i in imgObjs]
-    # imgs = ImgList()
-    # for i in imgUrls:
-    #     if 'hotel-logo' in i:
-    #         imgs.logo = i
-    #     elif 'key_home_1' in i:
-    #         imgs.key_home_1 = i
-    #     elif 'key_home_2' in i:
-    #         imgs.key_home_2 = i
-    #     elif 'key_home_3' in i:
-    #         imgs.key_home_3 = i
-    return render(
-        request,
-        "index.html",
-        {"hotel": hotel, "posters": hotel.poster_set.all()},
-    )
+    hotel = Hotel.objects.first()
+    if not hotel:
+        raise Http404("No hotel yet.")
+    return render(request, "index.html", {"hotel": hotel})
 
 
 def room_info(request):
@@ -121,7 +96,7 @@ def order_done(request):
 
 def about(request):
     title = "DJango Hotel"
-    hotel = Hotel.objects.get(name="DJango Hotel")
+    hotel = Hotel.objects.first()
     name = hotel.name
     summary = hotel.summary
     address = hotel.address

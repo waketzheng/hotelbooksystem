@@ -1,6 +1,6 @@
 import os
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "booksystem.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "booksystem.settings.prod")
 
 from django.core.wsgi import get_wsgi_application
 
