@@ -1,22 +1,19 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}酒店介绍{% endblock %}
 {% block wraptype %}
     <div class="wrap about">
 {% endblock %}
 {% block content %}
-            <div class="banner">
-                <ul>
-                    <li>
-                        {% load staticfiles %}
-                        <img src="{% static "pic/key_overview_1.jpg" %}" alt="Grunt">
-                    </li>
-                </ul>
-
-                <div id="hotelDescription">
-                    <h2>酒店介绍: 广州罗马路酒店</h2>
-                    <p>
-                        {{ description }}
-                    </p>
-                </div>
-            </div>
+    <div class="banner">
+        <ul>
+            <li>
+            <img src="{% static "pic/key_overview_1.jpg" %}" alt="Grunt">
+            </li>
+        </ul>
+        <div id="hotelDescription">
+            <h2>酒店介绍: {{ hotel.name }}</h2>
+            <p>{{ hotel.summary }}</p>
+        </div>
+    </div>
 {% endblock %}

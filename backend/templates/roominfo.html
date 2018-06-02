@@ -1,36 +1,29 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}房型介绍{% endblock %}
 {% block wraptype %}
     <div class="wrap room">
+    </div>
 {% endblock %}
 {% block content %}
-                <div class="banner">
-                <ul>
-                    <li>
-                        {% load staticfiles %}
-                        <img src="{% static "pic/key_home_1.jpg" %} ">
-                    </li>
-                </ul>
+    <div class="banner">
+    <ul>
+        <li>
+        <img src = "{% static "pic / key_home_1.jpg" %} ">
+        </li>
+    </ul>
+    </div>
+    <div class = "order">
+        <a href = "/order"><h2> 预订 </h2></a>
+    </div>
 
-                <div class="order"><a href="/order"><h2>预订</h2></a></div>
-            </div>
-
-
- <div id="hotelDescription">
-    {% for roomInfo in roomInfoList %}
-
-                 <article>
-
-                    <h3>{{roomInfo.name}}</h3>
-                    <p>
-                        {{roomInfo.description}}
-
-                    </p>
-                    <p>
-                        价格：{{ roomInfo.price }} 元/天
-                    </p>
-                 </article>
-    {% endfor %}
-  </div>
-
+    <div id="hotelDescription">
+        {% for room in roomInfoList %}
+            <article>
+                <h3>{{ room.name }}</h3>
+                <p>{{ room.description }}</p>
+                <p>价格：{{ room.price }} 元/天</p>
+            </article>
+        {% endfor %}
+    </div>
 {% endblock %}

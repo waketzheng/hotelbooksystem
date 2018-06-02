@@ -22,6 +22,6 @@ INSTALLED_APPS.append("debug_toolbar")
 MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
 DEBUG_TOOLBAR_CONFIG = {
     "JQUERY_URL": "//cdn.bootcss.com/jquery/2.1.4/jquery.min.js",
-    "SHOW_TOOLBAR_CALLBACK": lambda x: True,
     "SHOW_COLLAPSED": True,
+    "SHOW_TOOLBAR_CALLBACK": lambda x: True,
 }

@@ -95,28 +95,5 @@ def order_done(request):
 
 
 def about(request):
-    title = "DJango Hotel"
     hotel = Hotel.objects.first()
-    name = hotel.name
-    summary = hotel.summary
-    address = hotel.address
-
-    imgObjs = ImageAtQiniu.objects.all()
-    imgUrls = [QiniuPush.private_download_url(i.fullname) for i in imgObjs]
-    imgs = ImgList()
-
-    for i in imgUrls:
-        if "hotel-logo" in i:
-            imgs.logo = i
-
-    return render(
-        request,
-        "about.html",
-        {
-            "title": title,
-            "name": name,
-            "summary": summary,
-            "address": address,
-            "img": imgs,
-        },
-    )
+    return render(request, "about.html", {"hotel": hotel})
