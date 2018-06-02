@@ -1,5 +1,5 @@
-import datetime
-from random import randint
+from datetime import datetime
+from random import choice
 from django.conf import settings
 from django.http import Http404
 from django.shortcuts import render
@@ -24,61 +24,31 @@ def room_info(request):
 
 def order(request):
     hotel = Hotel.objects.first()
+    # TODO: check whether rooms are avalible
     return render(request, "order.html", {"hotel": hotel})
 
 
 def order_done(request):
-    imgObjs = ImageAtQiniu.objects.all()
-    imgUrls = [QiniuPush.private_download_url(i.fullname) for i in imgObjs]
-    imgs = ImgList()
-
-    for i in imgUrls:
-        if "hotel-logo" in i:
-            imgs.logo = i
-
-    tel, name = request.GET["tel"], request.GET["name"]
-    IDcard = request.GET["IDcard"]
-    if Customer.objects.all():
-        cc = Customer.objects.filter(IDcard=IDcard)
-    else:
-        cc = []
-    for c in cc:
-        if c and c.tel == tel and c.name == name:
-            tempCustomer = c
-            break
-    else:
-        tempCustomer = Customer(tel=tel, name=name, IDcard=IDcard)
-        tempCustomer.save()
-
-    tempOrder = Order()
-    tempOrder.customer = tempCustomer
-    tempOrder.roomtype = request.GET["roomtype"]
-
-    begin, end = request.GET["begin"], request.GET["end"]
-    tempOrder.begin = (datetime.datetime.strptime(begin, "%Y-%m-%d")).date()
-    tempOrder.end = (datetime.datetime.strptime(end, "%Y-%m-%d")).date()
-    period = (tempOrder.end - tempOrder.begin).days
-    if period == 0:
-        period = 1
-
-    price = 0
-
-    if tempOrder.roomtype == "standard":
-        price = (Room.objects.get(name="标准间")).price
-
-    elif tempOrder.roomtype == "better":
-        price = (Room.objects.get(name="豪华间")).price
-
-    elif tempOrder.roomtype == "president":
-        price = (Room.objects.get(name="总统间")).price
-
-    tempOrder.roomnum = randint(1, 10)
-    tempOrder.totalprice = period * price
-    tempOrder.save()
-
-    return render(
-        request, "orderresult.html", {"order": tempOrder, "img": imgs}
+    print(request.POST)
+    customer, created = Customer.objects.get_or_create(
+        phone=request.POST["phone"],
+        name=request.POST["name"],
+        id_card=request.POST["IDcard"],
     )
+    begin, end = request.POST["begin"], request.POST["end"]
+    begin = datetime.strptime(begin, "%Y-%m-%d").date()
+    end = datetime.strptime(end, "%Y-%m-%d").date()
+    period = (end - begin).days or 1
+    roomtype = RoomType.objects.get(detail=request.POST["roomtype"])
+    order = Order.objects.create(
+        customer=customer,
+        roomtype=roomtype,
+        begin=begin,
+        end=end,
+        room=choice(roomtype.room_set.all()),
+        totalprice=period * roomtype.price,
+    )
+    return render(request, "done_order.html", {"order": order})
 
 
 def about(request):

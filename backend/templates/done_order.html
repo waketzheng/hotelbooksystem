@@ -8,8 +8,8 @@
         <h2>您的订单提交成功，订单号是：{{ order.id }}</h2>
         <h2>订单详情如下：
         <li>姓名：{{ order.customer.name }}</li>
-        <li>电话：{{ order.customer.tel }}</li>
-        <li>房号：{{ order.roomnum }}</li>
+        <li>电话：{{ order.customer.phone }}</li>
+        <li>房号：{{ order.room }}</li>
         <li>类型：{{ order.roomtype }}</li>
         <li>时间：{{ order.begin }}至{{ order.end }}</li>
         <li>总价：￥{{ order.totalprice }}</li>
