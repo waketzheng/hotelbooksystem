@@ -1,12 +1,6 @@
 from django.db import models
 
 
-ROOM_TYPE_CHOICES = (
-    ("standard", "标准间"),
-    ("better", "豪华间"),
-    ("president", "总统间"),
-)
-
 ORDER_STATE_CHOICES = (
     ("will", "预定中"),
     ("run", "执行中"),
@@ -22,6 +16,8 @@ class Hotel(models.Model):
     address = models.CharField("地址", max_length=50, null=True)
     summary = models.TextField("简介", blank=True)
     logo = models.ImageField(upload_to="images", null=True, blank=True)
+    order_background = models.ImageField(null=True, blank=True)
+    overview = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -46,11 +42,12 @@ class Customer(models.Model):
 
 class RoomType(models.Model):
     hotel = models.ForeignKey(Hotel, verbose_name="酒店", on_delete=None)
-    detail = models.CharField("类型", max_length=30, choices=ROOM_TYPE_CHOICES)
+    detail = models.CharField("类型", max_length=30, null=True, blank=True)
     price = models.IntegerField("价格", null=True, blank=True)
+    summary = models.TextField("简介", null=True, blank=True)
 
     def __str__(self):
-        return self.get_detail_display()
+        return self.detail
 
 
 class Room(models.Model):
@@ -59,7 +56,7 @@ class Room(models.Model):
         RoomType, verbose_name="房间类型", on_delete=None, null=True, blank=True
     )
     area = models.IntegerField("面积", null=True, blank=True)
-    summary = models.TextField("简介")
+    summary = models.TextField("简介", null=True, blank=True)
 
     @property
     def price(self):

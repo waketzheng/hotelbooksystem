@@ -3,7 +3,7 @@ from random import randint
 from django.conf import settings
 from django.http import Http404
 from django.shortcuts import render
-from .models import Hotel, Room, Order, Customer
+from .models import Hotel, Room, RoomType, Order, Customer
 
 
 def index(request):
@@ -15,29 +15,16 @@ def index(request):
 
 
 def room_info(request):
-    rooms = Room.objects.all()
-    imgObjs = ImageAtQiniu.objects.all()
-    imgUrls = [QiniuPush.private_download_url(i.fullname) for i in imgObjs]
-    imgs = ImgList()
-
-    for i in imgUrls:
-        if "hotel-logo" in i:
-            imgs.logo = i
-
-    return render(request, "roominfo.html", {"rooms": rooms, "img": imgs})
+    hotel = Hotel.objects.first()
+    roomtypes = RoomType.objects.filter(hotel=hotel)
+    return render(
+        request, "roominfo.html", {"roomtypes": roomtypes, "hotel": hotel}
+    )
 
 
 def order(request):
-    # TODO: without qiniu
-    imgObjs = ImageAtQiniu.objects.all()
-    imgUrls = [QiniuPush.private_download_url(i.fullname) for i in imgObjs]
-    imgs = ImgList()
-
-    for i in imgUrls:
-        if "hotel-logo" in i:
-            imgs.logo = i
-
-    return render(request, "order.html", {"img": imgs})
+    hotel = Hotel.objects.first()
+    return render(request, "order.html", {"hotel": hotel})
 
 
 def order_done(request):

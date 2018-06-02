@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
+{% load static %}
 <head lang="zh-cn">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
     {% block insert %}
-        {% load staticfiles %}
-
         <link rel="stylesheet" href="{% static "css/bootstrap.css" %}" >
         <link rel="stylesheet" href="{% static "css/responsive-nav.css" %}">
         <link rel="stylesheet" href="{% static "css/styles.css" %}">
@@ -28,7 +27,7 @@
         <div id="header">
                 <div class="hotel-logo">
                     <a href="/" class="">
-                        <img src="{{ hotel.logo.url }}" alt="广州罗马路酒店">                        
+                        <img src="{{ hotel.logo.url }}" alt="{{ hotel }}">
                     </a>
                 </div>
                 <div id="navbar">
