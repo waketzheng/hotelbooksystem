@@ -29,7 +29,6 @@ def order(request):
 
 
 def order_done(request):
-    print(request.POST)
     customer, created = Customer.objects.get_or_create(
         phone=request.POST["phone"],
         name=request.POST["name"],

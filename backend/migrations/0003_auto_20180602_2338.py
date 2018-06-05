@@ -5,24 +5,24 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('backend', '0002_auto_20180530_2242'),
-    ]
+    dependencies = [("backend", "0002_auto_20180530_2242")]
 
     operations = [
         migrations.AddField(
-            model_name='roomtype',
-            name='summary',
-            field=models.TextField(blank=True, null=True, verbose_name='简介'),
+            model_name="roomtype",
+            name="summary",
+            field=models.TextField(blank=True, null=True, verbose_name="简介"),
         ),
         migrations.AlterField(
-            model_name='room',
-            name='summary',
-            field=models.TextField(blank=True, null=True, verbose_name='简介'),
+            model_name="room",
+            name="summary",
+            field=models.TextField(blank=True, null=True, verbose_name="简介"),
         ),
         migrations.AlterField(
-            model_name='roomtype',
-            name='detail',
-            field=models.CharField(blank=True, max_length=30, null=True, verbose_name='类型'),
+            model_name="roomtype",
+            name="detail",
+            field=models.CharField(
+                blank=True, max_length=30, null=True, verbose_name="类型"
+            ),
         ),
     ]

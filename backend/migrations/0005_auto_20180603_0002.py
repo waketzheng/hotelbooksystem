@@ -5,14 +5,12 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('backend', '0004_hotel_order_backgroud'),
-    ]
+    dependencies = [("backend", "0004_hotel_order_backgroud")]
 
     operations = [
         migrations.RenameField(
-            model_name='hotel',
-            old_name='order_backgroud',
-            new_name='order_background',
-        ),
+            model_name="hotel",
+            old_name="order_backgroud",
+            new_name="order_background",
+        )
     ]

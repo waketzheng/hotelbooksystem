@@ -44,6 +44,9 @@ class RoomType(models.Model):
     hotel = models.ForeignKey(Hotel, verbose_name="酒店", on_delete=None)
     detail = models.CharField("类型", max_length=30, null=True, blank=True)
     price = models.IntegerField("价格", null=True, blank=True)
+    image = models.ImageField(
+        "image", upload_to="roomtype", null=True, blank=True
+    )
     summary = models.TextField("简介", null=True, blank=True)
 
     def __str__(self):
