@@ -7,7 +7,7 @@ A demo for hotel order booking system
 Base on
 -------
 
-Python: 3.6
+Python: 3.6+
 
 Django: 2.0+
 
