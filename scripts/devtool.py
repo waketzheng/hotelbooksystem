@@ -45,7 +45,11 @@ def bump():
             part = get_part(a)
         else:
             part = "patch"
-    cmd = f"bumpversion --commit --current-version {version} {part} pyproject.toml"
+    parse = '"(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)"'
+    cmd = (
+        f'bumpversion --commit --parse {parse}'
+        f" --current-version {version} {part} pyproject.toml"
+    )
     if part != 'patch':
         cmd + ' --tag'
     exit_if_run_failed(cmd)

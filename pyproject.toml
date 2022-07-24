@@ -46,6 +46,7 @@ extend-ignore = "E203,"
 per-file-ignores = [
   "settings.py:F401,E501",
   "tests.py:F401",
+  "devtool.py:W605",
 ]
 
 [tool.mypy]
