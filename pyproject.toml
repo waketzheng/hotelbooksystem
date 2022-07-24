@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "booksystem"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Waket Zheng <waketzheng@gmail.com>"]
 
