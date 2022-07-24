@@ -1,0 +1,144 @@
+[
+    {
+        "model": "houses.hotel",
+        "pk": 1,
+        "fields": {
+            "tel": "0755-8380 8888",
+            "code": "518000",
+            "name": "1979的春天大酒店",
+            "address": "广东省深圳市南山区科苑南路1008号",
+            "summary": "deliciour food, clean, quiet",
+            "logo": "images/hotel-logo.png",
+            "order_background": "background_order.jpg",
+            "overview": "key_overview_1.jpg"
+        }
+    },
+    {
+        "model": "houses.poster",
+        "pk": 1,
+        "fields": {
+            "hotel": 1,
+            "img": "images/home-koufonisia-hotel-02.jpg"
+        }
+    },
+    {
+        "model": "houses.poster",
+        "pk": 2,
+        "fields": {
+            "hotel": 1,
+            "img": "images/hotel-rialto-home.jpg"
+        }
+    },
+    {
+        "model": "houses.poster",
+        "pk": 3,
+        "fields": {
+            "hotel": 1,
+            "img": "images/th2.jpeg"
+        }
+    },
+    {
+        "model": "members.customer",
+        "pk": 1,
+        "fields": {
+            "phone": "18688889999",
+            "name": "nobody",
+            "id_card": "123123123"
+        }
+    },
+    {
+        "model": "members.customer",
+        "pk": 2,
+        "fields": {
+            "phone": "18866668888",
+            "name": "bigricher",
+            "id_card": "44554454455644555"
+        }
+    },
+    {
+        "model": "houses.roomtype",
+        "pk": 1,
+        "fields": {
+            "hotel": 1,
+            "detail": "standard",
+            "price": 88,
+            "image": "roomtype/230d0a0000004votc0002_W_550_412.jpg",
+            "summary": ""
+        }
+    },
+    {
+        "model": "houses.roomtype",
+        "pk": 2,
+        "fields": {
+            "hotel": 1,
+            "detail": "better",
+            "price": 128,
+            "image": "roomtype/617d108d98f84d58b559705dd467623d_R_300_225.jpg",
+            "summary": ""
+        }
+    },
+    {
+        "model": "houses.roomtype",
+        "pk": 3,
+        "fields": {
+            "hotel": 1,
+            "detail": "president",
+            "price": 8888,
+            "image": "roomtype/presiden.jpg",
+            "summary": ""
+        }
+    },
+    {
+        "model": "houses.room",
+        "pk": "202",
+        "fields": {
+            "roomtype": 1,
+            "area": 20,
+            "summary": "enjoy the price"
+        }
+    },
+    {
+        "model": "houses.room",
+        "pk": "302",
+        "fields": {
+            "roomtype": 2,
+            "area": 30,
+            "summary": "enjoy the room"
+        }
+    },
+    {
+        "model": "houses.room",
+        "pk": "618",
+        "fields": {
+            "roomtype": 3,
+            "area": 368,
+            "summary": "Enjoy yourself."
+        }
+    },
+    {
+        "model": "orders.order",
+        "pk": 1,
+        "fields": {
+            "customer": 1,
+            "roomtype": 1,
+            "room": "202",
+            "begin": "2018-06-02",
+            "end": "2018-06-03",
+            "totalprice": 88,
+            "state": ""
+        }
+    },
+    {
+        "model": "orders.order",
+        "pk": 2,
+        "fields": {
+            "customer": 2,
+            "roomtype": 1,
+            "room": "202",
+            "begin": "2018-06-02",
+            "end": "2018-06-03",
+            "totalprice": 88,
+            "state": ""
+        }
+    }
+]

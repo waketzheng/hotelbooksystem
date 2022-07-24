@@ -80,6 +80,7 @@ celerybeat-schedule
 
 # virtualenv
 venv/
+.venv/
 ENV/
 
 # Spyder project settings
@@ -94,5 +95,5 @@ ENV/
 # local db
 db.sqlite3
 
-# pipenv
-Pipfile.lock
+# collected static files
+static/

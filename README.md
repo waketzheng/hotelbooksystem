@@ -7,9 +7,9 @@ A demo for hotel order booking system
 Base on
 -------
 
-Python: 3.6+
+Python: 3.8+
 
-Django: 2.0+
+Django: 4.0+
 
 MySQL
 
@@ -23,18 +23,16 @@ git clone https://github.com/waketzheng/hotelbooksystem
 cd hotelbooksystem
 ```
 
-2. create a virtual environment(use `pipenv`: https://docs.pipenv.org/)
+2. create a virtual environment(use `poetry`: https://github.com/python-poetry/poetry)
 
 ```bash
-# You may need to install gcc zlib-dev python3-dev mysql-dev
-# see: https://github.com/PyMySQL/mysqlclient-python
-pipenv install --dev
+poetry install --no-root
 ```
 
 3. activate it
 
 ```bash
-pipenv shell
+poetry shell
 ```
 
 4. init database
@@ -62,8 +60,8 @@ Production
 
 ```bash
 echo '
-DJANGO_SETTINGS_MODULE=booksystem.settings.prod
-dB_USER=your-database-user-name
+DEBUG=0
+DB_USER=your-database-user-name
 DB_PASSWD=your-database-password
 EMAIL=your-email
 EMAIL_PASSWD=your-email-password
@@ -72,18 +70,18 @@ EMAIL_PASSWD=your-email-password
 
 Example of `.env`:
 ```
-DJANGO_SETTINGS_MODULE=booksystem.settings.prod
-dB_USER=root
+DEBUG=0
+DB_USER=root
 DB_PASSWD=123456
-EMAIL=jaket5219999@126.com
+EMAIL=waketzheng@gmail.com
 EMAIL_PASSWD=123456
 ```
 
 2. create virtual environment and activate it
 
 ```bash
-pipenv install
-pipenv shell
+poetry install --no-root --no-dev
+poetry shell
 ```
 
 3. create database for this project and migrate
@@ -94,4 +92,4 @@ pipenv shell
 
 4. deploy as other django project
 
-    https://docs.djangoproject.com/en/2.0/howto/deployment/wsgi/gunicorn/
+    https://docs.djangoproject.com/en/4.0/howto/deployment/wsgi/gunicorn/

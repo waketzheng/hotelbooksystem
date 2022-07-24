@@ -1,8 +1,7 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3
 import os
 import sys
 from pathlib import Path
-
 
 SETTINGS_ENV = "DJANGO_SETTINGS_MODULE"
 SQL = "create database {} DEFAULT CHARACTER SET {} COLLATE utf8_general_ci"
