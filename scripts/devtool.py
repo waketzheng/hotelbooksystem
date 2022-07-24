@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import os
 import subprocess
 import sys
 from pathlib import Path
@@ -21,14 +20,20 @@ def run_and_echo(cmd: str) -> int:
     return subprocess.run(cmd, shell=True).returncode
 
 
+def get_current_version() -> str:
+    r = subprocess.run(["poetry", "version", "-s"], capture_output=True)
+
+    return r.stdout.decode().strip()
+
+
 def exit_if_run_failed(cmd: str) -> None:
     if rc := run_and_echo(cmd):
         sys.exit(rc)
 
 
 def bump():
-    print("Current version:")
-    os.system("poetry version")
+    version = get_current_version()
+    print(f"Current version: {version}")
     if sys.argv[1:]:
         part = get_part(sys.argv[1])
     else:
@@ -40,7 +45,10 @@ def bump():
             part = get_part(a)
         else:
             part = "patch"
-    exit_if_run_failed(f"bumpversion {part}")
+    cmd = f"bumpversion --commit --current-version {version} {part} pyproject.toml"
+    if part != 'patch':
+        cmd + ' --tag'
+    exit_if_run_failed(cmd)
     exit_if_run_failed("git push && git push --tags && git log -1")
 
 
